@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.env
+.env.*
+*.sqlite3
+*.db
+
+# Jupyter / Colab
+.ipynb_checkpoints/
+
+# OS/macOS
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+
+# Virtualenv / Pipenv
+.venv/
+env/
+venv/
+Pipfile.lock
+
+# Gradio cache
+gradio_cached_examples/
+*.mp3
+*.wav
+
+# Keys and secrets
+sqlkey.pem
+*.pem
+*.key
+*.crt
+
+# Logs
+*.log
+
+# Node (if present for frontend)
+node_modules/
+dist/
+build/
