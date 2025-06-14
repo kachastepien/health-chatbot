@@ -1,37 +1,54 @@
-# ⛔ Pliki środowiskowe
+# 🔒 Sekrety i środowisko
 .env
-*.env
+.env.*
 *.pem
+*.key
+*.crt
 
-# 📦 Wirtualne środowiska
-venv/
-env/
-.venv/
-.env/
-pip-wheel-metadata/
+# 🐍 Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
 *.egg-info/
 .eggs/
 
-# 💻 VS Code
-.vscode/
-
-# 🔊 Audio testy
+# 🧪 Testowe i lokalne audio
 *.mp3
 *.wav
+*.ogg
+*_AUTOPLAY.*
+*_testing.*
+*_test.*
 
-# 📸 Obrazy testowe
+# 📷 Obrazy testowe
 *.jpg
 *.jpeg
 *.png
 
-# 📦 Logi i cache
-*.log
-.cache/
-*.sqlite3
+# 🧠 Gradio
+.gradio/
+gradio_cached_examples/
+final.mp3
 
-# ⚙️ System
+# 📦 Virtualenv / Pipenv
+.venv/
+env/
+venv/
+Pipfile.lock
+
+# 🧪 Logs i cache
+*.log
+*.tmp
+*.bak
+.cache/
+
+# 💻 OS / edytory
 .DS_Store
 Thumbs.db
+.vscode/
+.idea/
 
-# 🧠 Gradio Cache
-gradio_cached_examples/
+# 📓 Jupyter
+.ipynb_checkpoints/
