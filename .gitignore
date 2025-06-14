@@ -1,0 +1,37 @@
+# ⛔ Pliki środowiskowe
+.env
+*.env
+*.pem
+
+# 📦 Wirtualne środowiska
+venv/
+env/
+.venv/
+.env/
+pip-wheel-metadata/
+*.egg-info/
+.eggs/
+
+# 💻 VS Code
+.vscode/
+
+# 🔊 Audio testy
+*.mp3
+*.wav
+
+# 📸 Obrazy testowe
+*.jpg
+*.jpeg
+*.png
+
+# 📦 Logi i cache
+*.log
+.cache/
+*.sqlite3
+
+# ⚙️ System
+.DS_Store
+Thumbs.db
+
+# 🧠 Gradio Cache
+gradio_cached_examples/
