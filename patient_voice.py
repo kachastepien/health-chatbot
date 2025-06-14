@@ -5,6 +5,7 @@ import logging
 import speech_recognition as sr
 from pydub import AudioSegment
 from io import BytesIO
+from groq import Groq
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -39,6 +40,23 @@ def record_audio(file_path, timeout=20, phrase_time_limit=None):
     except Exception as e:
         logging.error(f"An error occurred: {e}")
 
-
-record_audio(file_path = "patient_voice_test.mp3",timeout=20, phrase_time_limit=10)
+audio_filepath = "patient_voice_test.mp3"
+#record_audio(file_path = audio_filepath  )
 #Setup Speech to text-STT-model for transcription
+
+def transcribe_with_groq(stt_model, audio_filepath, GROQ_API_KEY):
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+    if not GROQ_API_KEY:
+        raise ValueError("GROQ_API_KEY is not set in the environment variables.")
+
+    client = Groq(api_key=GROQ_API_KEY)
+    stt_model = "whisper-large-v3"
+    audio_file = open(audio_filepath, "rb")
+    # Transcribe the recorded audio using Groq's STT model)
+    transcription = client.audio.transcriptions.create(
+        model=stt_model,
+        file= audio_file,
+        language="pl",
+    )
+
+    return transcription.text

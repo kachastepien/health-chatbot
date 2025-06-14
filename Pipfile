@@ -8,6 +8,9 @@ groq = "*"
 speechrecognition = "*"
 pydub = "*"
 pyaudio = "*"
+gtts = "*"
+elevenlabs = "*"
+gradio = "*"
 
 [dev-packages]
 
