@@ -1,45 +1,54 @@
-# Python
-__pycache__/
-*.py[cod]
-*.so
-*.egg-info/
+# 🔒 Sekrety i środowisko
 .env
 .env.*
-*.sqlite3
-*.db
+*.pem
+*.key
+*.crt
 
-# Jupyter / Colab
-.ipynb_checkpoints/
+# 🐍 Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
 
-# OS/macOS
-.DS_Store
-Thumbs.db
+# 🧪 Testowe i lokalne audio
+*.mp3
+*.wav
+*.ogg
+*_AUTOPLAY.*
+*_testing.*
+*_test.*
 
-# Editor / IDE
-.vscode/
-.idea/
+# 📷 Obrazy testowe
+*.jpg
+*.jpeg
+*.png
 
-# Virtualenv / Pipenv
+# 🧠 Gradio
+.gradio/
+gradio_cached_examples/
+final.mp3
+
+# 📦 Virtualenv / Pipenv
 .venv/
 env/
 venv/
 Pipfile.lock
 
-# Gradio cache
-gradio_cached_examples/
-*.mp3
-*.wav
-
-# Keys and secrets
-sqlkey.pem
-*.pem
-*.key
-*.crt
-
-# Logs
+# 🧪 Logs i cache
 *.log
+*.tmp
+*.bak
+.cache/
 
-# Node (if present for frontend)
-node_modules/
-dist/
-build/
+# 💻 OS / edytory
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# 📓 Jupyter
+.ipynb_checkpoints/
