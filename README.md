@@ -40,7 +40,7 @@ Fake auth for demo/testing purposes – no database storage involved.
     ```
 3. Run the app:
     ```bash
-    python app.py
+    python gradio_app.py
     ```
 4. The Gradio interface will launch in your browser (with a public share link if needed).
 
