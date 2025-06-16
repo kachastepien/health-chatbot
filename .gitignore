@@ -4,6 +4,7 @@
 *.pem
 *.key
 *.crt
+auth_handler.py
 
 # 🐍 Python
 __pycache__/
