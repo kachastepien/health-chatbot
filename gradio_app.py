@@ -13,16 +13,17 @@ load_dotenv()
 # Stan sesji użytkownika
 SESSION = {"user": None}
 
-system_prompt="""Masz zachowywać się jak profesjonalny lekarz — wiem, że nim nie jesteś, ale to do celów edukacyjnych.
-Co znajduje się na tym zdjęciu? Czy widzisz na nim coś niepokojącego medycznie?
-Jeśli postawisz diagnozę różnicową, zaproponuj także możliwe sposoby leczenia.
-Nie używaj żadnych numerów ani znaków specjalnych w odpowiedzi.
-Twoja odpowiedź ma być jednym długim akapitem, bez podziału na punkty.
-Zawsze odpowiadaj tak, jakbyś mówił do prawdziwej osoby.
-Nie mów „Na zdjęciu widzę...”, tylko mów „Z tego co widzę, wygląda na to, że masz...”.
-Nie odpowiadaj jako model AI ani nie używaj markdowna — Twoja odpowiedź ma brzmieć jak od prawdziwego lekarza, nie jak od bota AI.
-Odpowiedź ma być zwięzła — maksymalnie dwa zdania.
-Bez żadnych wstępów — zacznij odpowiedź od razu."""
+system_prompt="""Zachowuj się jak doświadczony lekarz prowadzący rozmowę z pacjentem — choć wiem, 
+że nim nie jesteś, traktuj to jako ćwiczenie edukacyjne. Jeśli otrzymasz zdjęcie, powiedz, 
+czy widzisz na nim coś medycznie niepokojącego. Jeśli go nie ma, odnieś się tylko do opisu objawów w wiadomości. 
+Jeśli podejrzewasz diagnozę, wskaż możliwe przyczyny i zaproponuj leczenie. Nie używaj żadnych liczb, 
+wypunktowań ani znaków specjalnych. Twoja odpowiedź ma być jednym ciągłym akapitem, bez struktury punktowanej. 
+Mów naturalnie, jak do pacjenta — nie mów „Na zdjęciu widzę...”, tylko przejdź od razu do sedna: 
+„Z tego co widzę, wygląda na to, że masz...”. Nigdy nie informuj, że jesteś modelem językowym. 
+Nie używaj markdowna. Odpowiedź ma być krótka i rzeczowa — maksymalnie dwa zdania. 
+Pomijaj wszelkie wstępy i przejdź od razu do meritum.
+
+"""
 
 
 # 🔐 Funkcja logowania
@@ -71,21 +72,43 @@ def openai_chat(user_message):
     except Exception as e:
         return f"❌ Błąd: {e}"
 
-
 def process_inputs(audio_filepath, image_filepath):
-    speech_to_text_output = transcribe_with_groq(GROQ_API_KEY=os.environ.get("GROQ_API_KEY"), 
-                                                 audio_filepath=audio_filepath,
-                                                 stt_model="whisper-large-v3")
+    speech_to_text_output = ""
 
-    # Handle the image input
-    if image_filepath:
-        doctor_response = analyze_image_with_query(query=system_prompt+speech_to_text_output, encoded_image=encode_image(image_filepath), model="meta-llama/llama-4-scout-17b-16e-instruct")
+    # Obsługa braku audio
+    if audio_filepath:
+        speech_to_text_output = transcribe_with_groq(
+            GROQ_API_KEY=os.environ.get("GROQ_API_KEY"),
+            audio_filepath=audio_filepath,
+            stt_model="whisper-large-v3"
+        )
     else:
-        doctor_response = "No image provided for me to analyze"
+        speech_to_text_output = "(Brak nagrania głosowego — opisz objawy ręcznie lub dołącz audio.)"
 
-    voice_of_doctor = text_to_speech_with_elevenlabs(input_text=doctor_response, output_filepath="final.mp3") 
+    # Obsługa obrazu
+    encoded_img = None
+    if image_filepath:
+        try:
+            encoded_img = encode_image(image_filepath)
+        except Exception as e:
+            print(f"⚠️ Błąd podczas kodowania obrazu: {e}")
+            encoded_img = None
+
+    # Analiza
+    doctor_response = analyze_image_with_query(
+        query=system_prompt + " " + speech_to_text_output,
+        encoded_image=encoded_img,
+        model="meta-llama/llama-4-scout-17b-16e-instruct"
+    )
+
+    # TTS
+    voice_of_doctor = text_to_speech_with_elevenlabs(
+        input_text=doctor_response,
+        output_filepath="final.mp3"
+    )
 
     return speech_to_text_output, doctor_response, voice_of_doctor
+
 
 # 🧱 UI
 with gr.Blocks() as app:

@@ -24,27 +24,31 @@ query="Is there something wrong with my face?"
 model = "meta-llama/llama-4-scout-17b-16e-instruct"
 #model="llama-3.2-90b-vision-preview" #Deprecated
 
-def analyze_image_with_query(query, model, encoded_image):
-    client=Groq()  
-    messages=[
-        {
-            "role": "user",
-            "content": [
-                {
-                    "type": "text", 
-                    "text": query
-                },
-                {
-                    "type": "image_url",
-                    "image_url": {
-                        "url": f"data:image/jpeg;base64,{encoded_image}",
-                    },
-                },
-            ],
-        }]
-    chat_completion=client.chat.completions.create(
+def analyze_image_with_query(query, model, encoded_image=None):
+    from groq import Groq
+    client = Groq()
+
+    # Przygotuj wiadomość — zawsze dodaj tekst
+    content = [{"type": "text", "text": query}]
+
+    # Dodaj obraz tylko jeśli istnieje
+    if encoded_image:
+        content.append({
+            "type": "image_url",
+            "image_url": {
+                "url": f"data:image/jpeg;base64,{encoded_image}",
+            },
+        })
+
+    messages = [{
+        "role": "user",
+        "content": content
+    }]
+
+    # Teraz wyślij zapytanie
+    response = client.chat.completions.create(
+        model=model,
         messages=messages,
-        model=model
     )
 
-    return chat_completion.choices[0].message.content
+    return response.choices[0].message.content
